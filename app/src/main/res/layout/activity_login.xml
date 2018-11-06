@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp">
+    <TextView
+        android:id="@+id/tv_9"
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:text="登录"
+        android:textSize="50dp"
+        android:gravity="center"
+        android:layout_marginTop="40pt"
+        android:layout_marginBottom="20dp"/>
+    <EditText
+        android:id="@+id/Username"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        android:layout_below="@id/tv_9"
+        android:textColor="#000000"
+        android:hint="用户名"
+        />
+    <EditText
+        android:id="@+id/Password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        android:layout_below="@id/Username"
+        android:layout_marginTop="15dp"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:hint="密码"
+        />
+    <Button
+        android:id="@+id/Login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/Password"
+        android:text="登录"
+        android:gravity="center"/>
+
+</RelativeLayout>
