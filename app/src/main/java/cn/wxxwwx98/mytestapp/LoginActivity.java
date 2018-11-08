@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +21,8 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private EditText EtUsername,EtPassword;
-    private SharedPreferences sharedPreferences;
-
+    private SharedPreferences sharedPreferences = null;
+    private long lastBack = 0;
     Context context = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +33,40 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.Login);
         EtUsername = findViewById(R.id.Username);
         EtPassword = findViewById(R.id.Password);
+        //查找是否登录过如果登陆过则跳过登录界面
+        if(GetUserSharedPreferences()){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
+    /**
+     *  用于记录登录状态
+     * @param username 用户名
+     * @param password 密码
+     */
+    private void SetUserSharedPreferences(String username,String password){
+        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.commit();
+    }
 
+    /**
+     *  如果已经登录过返回true
+     *  未登陆过则返回false
+     * @return
+     */
+    private boolean GetUserSharedPreferences(){
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");//(key,若无数据需要赋的值)
+        String password = sharedPreferences.getString("password", "");
 
+        if(!username.equals("") && !password.equals(""))
+            return true;
+        return false;
     }
 
     @Override
@@ -68,45 +98,51 @@ public class LoginActivity extends AppCompatActivity {
             //for (String k : m.keySet()){
             //  System.out.println(k + " : " + m.get(k)+"\t\t\t\t");
             //}
+            //从当前List获取用户名和密码
             String Username = m.get("Name").toString();
             String Password = m.get("Password").toString();
-            System.out.println("\n"+Username + ":" + Password);
-
+            //System.out.println("\n"+Username + ":" + Password);
+            //对比用户名
             if (username.equals(Username)) {
+                //对比密码是否正确
                 if (username.equals(Username) && password.equals(Password)) {
-                    System.out.println(m.get("Name") + "登录成功");
+                    //对比完全正确后调用下面的函数将username和password保存
+                    SetUserSharedPreferences(username,password);
                     i = 1;
                     break;
                 } else {
-                    System.out.println(m.get("Name") + "密码错误");
                     i = -1;
                     break;
-                    //MyToast(username+"密码错误");
                 }
             } else {
-                System.out.println("用户名错误");
                 i = 0;
             }
         }
         return i;
     }
+
     /**
      *  登录的基本逻辑
      */
     private void Login() {
+        //创建线程
         new Thread(
                 new Runnable() {
+                    //获取到用户输入的密码和用户名
                     String username = EtUsername.getText().toString();
                     String password = EtPassword.getText().toString();
                     @Override
                     public void run() {
+                        //判断用户名和密码是否正确
                         if (username.equals("")){MyToast("请输入用户名！！！"); return;}
                         if (password.length() < 6){MyToast("密码小于6位"); return;}
+                        //创建DBService对象查询表数据，调用UserEquals()是否可以登录，并执行结果动作
                         DBService dbService = new DBService();
                         try {
                             Connection conn = dbService.getConnection();
                             List<Map<String, Object>> list = dbService.execQuery("select * from user;", null);
                             int i = UserEquals(list, username, password);
+
                             if (i == 0) {
                                 //System.out.println("用户名错误");
                                 MyToast("'"+username + "'是错误用户名\n或者'"+username+"'户名不存在");
@@ -121,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //System.out.println(username + "密码错误");
                                 MyToast(username + ":的密码错误");
                             }
+                            //关闭数据库对象
                             dbService.close(null, null, conn);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
@@ -130,6 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }).start();
     }
+
     /**
      *这个函数用于把Toast包含到线程里
      */
@@ -138,11 +176,11 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this,text,Toast.LENGTH_LONG).show();
         Looper.loop();
     }
+
     /**
-     * 再按一次退出程序
+     *  @Override
+     *  再按一次退出程序
      */
-    private long lastBack = 0;
-    @Override
     public void onBackPressed(){
         if (lastBack == 0 || System.currentTimeMillis() - lastBack > 2000) {
             Toast.makeText(LoginActivity.this, "不登录就退出嘛?", Toast.LENGTH_SHORT).show();
