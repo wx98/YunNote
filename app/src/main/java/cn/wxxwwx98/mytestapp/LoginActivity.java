@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Connection;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private EditText EtUsername,EtPassword;
+    private TextView Tv1;
     private SharedPreferences sharedPreferences = null;
     private long lastBack = 0;
     Context context = null;
@@ -28,17 +31,44 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //删除标题栏
         getSupportActionBar().hide();
+
         context = this.getApplicationContext();
         btnLogin = findViewById(R.id.Login);
         EtUsername = findViewById(R.id.Username);
         EtPassword = findViewById(R.id.Password);
+        Tv1 = findViewById(R.id.tv1);
+        Tv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
         //查找是否登录过如果登陆过则跳过登录界面
         if(GetUserSharedPreferences()){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
+        EtUsername.setText(GetUserName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            public void onClick(View v) {
+                if (!isNetworkAvailable(context)) {
+                    Toast.makeText(LoginActivity.this,"你登录得连接网络啊orz",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Login();
+            }
+        });
     }
 
     /**
@@ -46,9 +76,10 @@ public class LoginActivity extends AppCompatActivity {
      * @param username 用户名
      * @param password 密码
      */
-    private void SetUserSharedPreferences(String username,String password){
+    private void SetUserSharedPreferences(String Uid,String username,String password){
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("uid",Uid);
         editor.putString("username", username);
         editor.putString("password", password);
         editor.commit();
@@ -69,21 +100,11 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-            public void onClick(View v) {
-                if (!isNetworkAvailable(context)) {
-                    Toast.makeText(LoginActivity.this,"你登录得连接网络啊orz",Toast.LENGTH_LONG).show();
-                    return;}
-                Login();
-            }
-        });
+    private String GetUserName(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Ruser", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("RName", "");//(key,若无数据需要赋的值)
+        return username;
     }
-
     /**
      * 使用用户输入的值对比从数据库中获取到的list
      *
@@ -101,13 +122,14 @@ public class LoginActivity extends AppCompatActivity {
             //从当前List获取用户名和密码
             String Username = m.get("Name").toString();
             String Password = m.get("Password").toString();
+            String Uid = m.get("UID").toString();
             //System.out.println("\n"+Username + ":" + Password);
             //对比用户名
             if (username.equals(Username)) {
                 //对比密码是否正确
                 if (username.equals(Username) && password.equals(Password)) {
                     //对比完全正确后调用下面的函数将username和password保存
-                    SetUserSharedPreferences(username,password);
+                    SetUserSharedPreferences(Uid,username,password);
                     i = 1;
                     break;
                 } else {
@@ -188,6 +210,25 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    /**
+     *  状态栏沉浸
+     * @param hasFocus
+     */
+    @Override
+    public void onWindowFocusChanged (boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 
     /**

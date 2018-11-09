@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp">
+    android:layout_margin="10dp">
     <TextView
         android:id="@+id/tv_9"
         android:layout_width="match_parent"
@@ -41,5 +41,29 @@
         android:layout_below="@id/Password"
         android:text="登录"
         android:gravity="center"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Login"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有账号？现在"
+            android:layout_toLeftOf="@id/tv1"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#29488f"
+            android:textSize="20dp"
+            android:text="注册"/>
+    </RelativeLayout>
+
 
 </RelativeLayout>
