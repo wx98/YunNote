@@ -109,8 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //Toast.makeText(MainActivity.this, "Test",Toast.LENGTH_LONG).show();
-
-                        _Birthday = dt.getYear()+"-"+dt.getMonth()+"-"+dt.getDayOfMonth();
+                        int i = dt.getMonth() + 1;
+                        _Birthday = dt.getYear()+"-"+i+"-"+dt.getDayOfMonth();
                         tv.setText(_Birthday);
                     }
                 });
@@ -137,7 +137,8 @@ public class RegisterActivity extends AppCompatActivity {
                 validateUserName(_UserName);
                 if(validate()){
                     Register();
-                    SetUserName(_UserName);
+//                    while (validateUserName)
+//                        SetUserName(_UserName);
                 }
 
             }
@@ -169,34 +170,34 @@ public class RegisterActivity extends AppCompatActivity {
         getValues();
         //此处调用函数验证数据库用户名不能重复
         if (!validateUserName){
-            MyToast("用户名已经有");
-            //Toast.makeText(RegisterActivity.this,"用户名已经有！",Toast.LENGTH_LONG).show();
+//            MyToast("用户名已经有");
+            Toast.makeText(RegisterActivity.this,"用户名已经有！",Toast.LENGTH_LONG).show();
             return false;
         }
 
         //验证密码合法性
         if (_Password1.length() < 6){
-            MyToast("密码不能小于6位");
-            //Toast.makeText(RegisterActivity.this,"密码不能小于6位！",Toast.LENGTH_LONG).show();
+//            MyToast("密码不能小于6位");
+            Toast.makeText(RegisterActivity.this,"密码不能小于6位！",Toast.LENGTH_LONG).show();
             return false;
         }
         if (!_Password1.equals(_Password2)){
-            MyToast("两次密码输入不同");
-            //Toast.makeText(RegisterActivity.this,"两次密码输入不同！",Toast.LENGTH_LONG).show();
+//            MyToast("两次密码输入不同");
+            Toast.makeText(RegisterActivity.this,"两次密码输入不同！",Toast.LENGTH_LONG).show();
             return false;
         }
 
         //验证生日合法性
         if(_Birthday == null){
-            MyToast("您没有选择您的生日");
-            //Toast.makeText(RegisterActivity.this,"您没有选择您的生日！",Toast.LENGTH_LONG).show();
+//            MyToast("您没有选择您的生日");
+            Toast.makeText(RegisterActivity.this,"您没有选择您的生日！",Toast.LENGTH_LONG).show();
             return false;
         }
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             if(dateFormat.parse(_Birthday).getTime() > dateFormat.parse(_NowDate).getTime()){
-                MyToast("生日选择错误");
-               // Toast.makeText(RegisterActivity.this,"生日选择错误",Toast.LENGTH_LONG).show();
+//                MyToast("生日选择错误");
+                Toast.makeText(RegisterActivity.this,"生日选择错误",Toast.LENGTH_LONG).show();
                 return false;
             }
         } catch (ParseException e) {
@@ -206,7 +207,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * 查询数据库中的用户名并设置到UserList上
+     * 查询数据库中的用户名z
      */
     private void validateUserName(final String UserName) {
         //创建线程
@@ -257,7 +258,7 @@ public class RegisterActivity extends AppCompatActivity {
                             String sql1 = "INSERT INTO `user`(`Name`,`Password`) values(\""+_UserName+"\",\""+_Password1+"\");";
                             String sql2 = "INSERT INTO `udata` (`UID`,`Sex`,`Birthday`,`RDate`) values ((select UID from user where Name = '"+_UserName+"'),'"+_Sex+"','"+_Birthday+"','"+_NowDate+"');";
                             if(dbService.execUpdate(sql1,null) > 0 && dbService.execUpdate(sql2,null) > 0){
-                                MyToast(_UserName+":注册成功");
+                                SetUserName(_UserName);
                             }else  MyToast(_UserName+":注册失败");
 
                             dbService.close(null, null, conn);
@@ -271,7 +272,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     *  用于记录注册的用户名
+     *  用于记录注册的用户名,并打开登录界面
      * @param username 用户名
      */
     private void SetUserName(String username){
@@ -279,9 +280,13 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("RName", username);
         editor.commit();
+
+        Looper.prepare();
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
+        Toast.makeText(RegisterActivity.this,username+":注册成功",Toast.LENGTH_LONG).show();
         finish();
+        Looper.loop();
     }
 
     /**
