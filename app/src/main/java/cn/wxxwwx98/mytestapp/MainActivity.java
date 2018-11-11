@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,21 +24,23 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TabHost.OnTabChangeListener {
+    private Context context = MainActivity.this;
+    public static List<Map<String, Object>> list;
     private long lastBack = 0;
-    private SharedPreferences sharedPreferences = null;
-    private String uid;
+    static public String uid;
     private String username;
-    private TabHost TB;
-
-    private TextView Tab1TvUid,Tab1TvUName,Tab1TvAge,Tab1TvSex,Tab1TvRdate;
-    private Button Tab1BtnExit;
-
     static String s1;
     static String s2;
     static String s3;
     static String s4;
     static String s5;
+    private TabHost TB;
+    private TextView TvAdd;
+    private ListView listview;
+    private TextView Tab1TvUid,Tab1TvUName,Tab1TvAge,Tab1TvSex,Tab1TvRdate;
+    private Button Tab1BtnExit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +60,12 @@ public class MainActivity extends AppCompatActivity {
         Tab1TvSex = findViewById(R.id.USex);
         Tab1TvRdate = findViewById(R.id.Rdate);
         Tab1BtnExit = findViewById(R.id.btnExit);
-
-        if(GetUserSharedPreferences())
+        TvAdd = findViewById(R.id.Add);
+        listview = findViewById(R.id.list);
+        if(GetUserSharedPreferences()){
+            // GetNote();
             GetUserInformation(uid);
-
+        }
     }
 
     /**
@@ -67,26 +73,57 @@ public class MainActivity extends AppCompatActivity {
      */
     protected void onResume(){
         super.onResume();
-//        TB.getTabWidget().getChildAt(0).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this,"1",Toast.LENGTH_LONG).show();
-//            }
-//        });
-//        TB.getTabWidget().getChildAt(1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this,"2",Toast.LENGTH_LONG).show();
-//            }
-//        });
+        MyListAdapter.GetNote(uid);
+        TvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
+                startActivity(intent);
+            }
+        });
         Tab1BtnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Clear();
             }
         });
+
+        listview.setAdapter(new MyListAdapter(context));
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MyListAdapter myListAdapter = new MyListAdapter(context);
+                int x = Integer.parseInt(myListAdapter.getItem(i).toString().trim());
+                SharedPreferences sharedPreferences = getSharedPreferences("nData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("Ndata", list.get(i).get("Ndata").toString().trim());
+                editor.putString("Title", list.get(i).get("Title").toString().trim());
+                editor.putString("Data", list.get(i).get("Data").toString().trim());
+                Toast.makeText(MainActivity.this,"点击pos:"+i+":"+myListAdapter.getItem(i),Toast.LENGTH_SHORT).show();
+                editor.commit();
+                Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
+                startActivity(intent);
+            }
+        });
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this,"长按pos:"+i,Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        TB.setOnTabChangedListener(this);
+        GetNote(uid);
     }
 
+    /**
+     * TabHost的监听事件
+     * @param tabId
+     */
+    @Override
+    public void onTabChanged(String tabId) {
+        onResume();
+    }
     /**
      *  取缓存中的Username和Uid
      * @return 如果不为空返回 true，为空返回 false
@@ -168,6 +205,27 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
     }
 
+    public static void GetNote(final String Uid){
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        DBService dbService = new DBService();
+                        try {
+                            Connection conn = dbService.getConnection();
+                            List<Map<String, Object>> list1 = dbService.execQuery("select * from ndata where UID = " + Uid , null);
+                            list = list1;
+                            //关闭数据库对象
+                            dbService.close(null, null, conn);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+    }
+
     /**
      *  状态栏沉浸
      * @param hasFocus
@@ -199,4 +257,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
+
+
 }
