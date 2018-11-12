@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-
+//apply plugin: 'com.android.library'
+//apply plugin: 'com.jakewharton.butterknife'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -27,6 +28,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/mysql-connector-java-5.1.30-bin.jar')
-    //implementation 'com.github.sendtion:XRichText:1.1'
+    //implementation 'com.jakewharton:butterknife:8.8.1'
+    //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 

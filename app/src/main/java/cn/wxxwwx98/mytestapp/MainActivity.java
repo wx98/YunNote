@@ -4,27 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements TabHost.OnTabChangeListener {
+public class MainActivity extends AppCompatActivity implements TabHost.OnTabChangeListener,MyListView.IRefreshen{
     private Context context = MainActivity.this;
     public static List<Map<String, Object>> list;
     private long lastBack = 0;
@@ -40,12 +40,18 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private ListView listview;
     private TextView Tab1TvUid,Tab1TvUName,Tab1TvAge,Tab1TvSex,Tab1TvRdate;
     private Button Tab1BtnExit;
+    Bundle bundle;
 
+    private MyListView myview;
+
+    private SimpleAdapter simpleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.getSupportActionBar().hide();
+
+        bundle = new Bundle();
         TB = findViewById(R.id.tabhost);
         TB.setup();
         LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -66,8 +72,24 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
             // GetNote();
             GetUserInformation(uid);
         }
+        //findView();
     }
+    void findView(){
 
+        //myview.setInterface(this);
+    }
+    private void initListView() {
+
+        simpleAdapter=new SimpleAdapter(
+                this,                                //上下文
+                list,                                //数据集
+                R.layout.listview_item,             //item布局文件
+                new String[]{"text","image"},       //map集合中的键值
+                new int[]{R.id.listview_text,R.id.listview_image}  //item布局文件中的控件id
+        );
+
+        myview.setAdapter(simpleAdapter);
+    }
     /**
      *
      */
@@ -78,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
+                bundle.putString("Nid","");
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -93,21 +117,27 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MyListAdapter myListAdapter = new MyListAdapter(context);
-                int x = Integer.parseInt(myListAdapter.getItem(i).toString().trim());
+
+                String x = myListAdapter.getItem(i).toString().trim();
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, AddNoteActivity.class);
+
+                bundle.putString("Nid",x);
+                intent.putExtras(bundle);
+
                 SharedPreferences sharedPreferences = getSharedPreferences("nData", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("Ndata", list.get(i).get("Ndata").toString().trim());
                 editor.putString("Title", list.get(i).get("Title").toString().trim());
                 editor.putString("Data", list.get(i).get("Data").toString().trim());
                 Toast.makeText(MainActivity.this,"点击pos:"+i+":"+myListAdapter.getItem(i),Toast.LENGTH_SHORT).show();
                 editor.commit();
-                Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
                 startActivity(intent);
             }
         });
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DeleteNote(i);
                 Toast.makeText(MainActivity.this,"长按pos:"+i,Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -115,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         TB.setOnTabChangedListener(this);
         GetNote(uid);
     }
-
     /**
      * TabHost的监听事件
      * @param tabId
@@ -144,10 +173,13 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private boolean Clear(){
         SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences sharedPreferences1 = getSharedPreferences("Ruser", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences2 = getSharedPreferences("nData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
         editor.clear();
         editor1.putString("RName", username);
+        editor2.commit();
         editor1.commit();
         editor.commit();
         if (sharedPreferences.getString("uid", "").equals("")){
@@ -205,6 +237,38 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 }).start();
     }
 
+    public void DeleteNote(final int i){
+        MyListAdapter myListAdapter = new MyListAdapter(context);
+        final String x = myListAdapter.getItem(i).toString().trim();
+        final String sql1 = "delete from `test`.`ndata` where `Ndata`="+x+"";
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        //创建DBService对象查询表数据，调用UserEquals()是否可以登录，并执行结果动作
+                        DBService dbService = new DBService();
+                        try {
+                            Connection conn = dbService.getConnection();
+                            //String sql1 = "INSERT INTO `ndata` (`UID`,`Title`,`Data`,`DateTime`) values ("+uid+",'"+_NTitle+"','"+_Note+"','"+_NDate+"');";
+                            //String sql1 = "update `test`.`ndata` set `Title`='"+_NTitle+"',`Data`='"+_Note+"',`DateTime`='"+_NDate+"' where `Ndata`="+_NData+";";
+                            if(dbService.execUpdate(sql1,null) > 0) {
+                                Looper.prepare();
+                                Toast.makeText(MainActivity.this,x+"删除成功",Toast.LENGTH_LONG).show();
+                                Looper.loop();
+                            }
+                            dbService.close(null, null, conn);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+    }
+    /**
+     * 根据Uid获取用户所有的笔记并赋值给list
+     * @param Uid
+     */
     public static void GetNote(final String Uid){
         new Thread(
                 new Runnable() {
@@ -258,5 +322,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         super.onBackPressed();
     }
 
-
+    @Override
+    public void onRefresh() {
+        onResume();
+    }
 }
