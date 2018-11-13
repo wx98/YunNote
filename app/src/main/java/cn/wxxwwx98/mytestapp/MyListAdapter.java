@@ -71,7 +71,7 @@ public  class MyListAdapter extends BaseAdapter {
     public void setValue(int i) {
 
     }
-    //SELECT * FROM `test`.`ndata` ORDER BY `Ndata` DESC  LIMIT 0,10;
+    //SELECT * FROM `test`.`ndata` where UID = 60 ORDER BY `Ndata` DESC  LIMIT 0,10 ;
     //对获取笔记列表SQL进行分页
     public static void GetNote(final String Uid){
         new Thread(new Runnable() {
