@@ -15,12 +15,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public  class MyListAdapter extends BaseAdapter {
+public  class MyListAdapter extends BaseAdapter{
     private static List<Map<String, Object>> list;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     ViewHolder holder = null;
     static int count;
+
+
 
     class ViewHolder {
         public TextView Title, Note, Date;
@@ -49,7 +51,8 @@ public  class MyListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (list == null){
-            GetNote(MainActivity.uid);
+            onRefresh();
+            //GetNote(MainActivity.uid);
         }
         //GetNote();
         if (convertView == null) {
@@ -68,11 +71,11 @@ public  class MyListAdapter extends BaseAdapter {
         holder.Date.setText(list.get(position).get("DateTime").toString().trim());
         return convertView;
     }
-    public void setValue(int i) {
 
-    }
+
     //SELECT * FROM `test`.`ndata` where UID = 60 ORDER BY `Ndata` DESC  LIMIT 0,10 ;
     //对获取笔记列表SQL进行分页
+    @Override
     public static void GetNote(final String Uid){
         new Thread(new Runnable() {
             @Override
@@ -85,6 +88,7 @@ public  class MyListAdapter extends BaseAdapter {
                     count = list.size();
                     //关闭数据库对象
                     dbService.close(null, null, conn);
+
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {

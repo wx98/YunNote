@@ -21,8 +21,13 @@ import android.widget.Toast;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity implements TabHost.OnTabChangeListener,MyListView.IRefreshen{
     private Context context = MainActivity.this;
@@ -42,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private Button Tab1BtnExit;
     Bundle bundle;
 
-    private MyListView myview;
+    @BindView(R.id.list)
+    static MyListView myview;
 
-    private SimpleAdapter simpleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,23 +77,13 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
             // GetNote();
             GetUserInformation(uid);
         }
-        //findView();
+        ButterKnife.bind(this);
+        myview.setInterface(this);
+        findView();
     }
     void findView(){
-
-        //myview.setInterface(this);
-    }
-    private void initListView() {
-
-        simpleAdapter=new SimpleAdapter(
-                this,                                //上下文
-                list,                                //数据集
-                R.layout.listview_item,             //item布局文件
-                new String[]{"text","image"},       //map集合中的键值
-                new int[]{R.id.listview_text,R.id.listview_image}  //item布局文件中的控件id
-        );
-
-        myview.setAdapter(simpleAdapter);
+        ButterKnife.bind(this);
+        myview.setInterface(this);
     }
     /**
      *
@@ -281,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                             list = list1;
                             //关闭数据库对象
                             dbService.close(null, null, conn);
+                            myview.refreshComplete();
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         } catch (SQLException e) {
@@ -323,7 +319,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     }
 
     @Override
-    public void onRefresh() {
-        onResume();
+    public void onRefresh(){
+        TB.setOnTabChangedListener(this);
+        GetNote(uid);
     }
 }

@@ -17,7 +17,6 @@ public class DBService {
     String url = "jdbc:mysql://rm-uf6k5d9yj8dt4h0z3lo.mysql.rds.aliyuncs.com:3306/test" ;// 连接字符串
     String username = "root" ;// 用户名
     String password = "Wx1262148122" ;// 密码
-
     Connection con = null ;// 连接对象
     PreparedStatement pstmt = null ;// 语句对象
     ResultSet rs = null ;// 结果集对象
