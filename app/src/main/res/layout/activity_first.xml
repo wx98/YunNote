@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    tools:context="cn.wxxwwx98.mytestapp.FirstActivity">
+
+    <Button
+        android:id="@+id/tv_login"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_above="@+id/tv_register"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="23dp"
+        android:alpha="0"
+        android:background="@drawable/btn_layout"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/tv_register"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="102dp"
+        android:alpha="0"
+        android:background="@drawable/btn_layout"
+        android:gravity="center"
+        android:text="新用户注册"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        app:srcCompat="@drawable/start"/>
+</RelativeLayout>

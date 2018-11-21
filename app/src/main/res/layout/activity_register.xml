@@ -24,28 +24,29 @@
         android:textColor="#000000"
         android:hint="用户名"
         />
+
     <RadioGroup
         android:id="@+id/RG1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@id/txtUsername"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/txtUsername">
+        android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/radioButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtUsername"
+            android:baselineAligned="false"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:layout_below="@+id/txtUsername"
             android:text="男" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/txtUsername"
             android:text="女" />
     </RadioGroup>
@@ -83,16 +84,39 @@
         android:textColor="#000000"
         android:hint="生日"
         />
+
     <Button
         android:id="@+id/Register"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/txtBitthday"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="13dp"
+        android:gravity="center"
         android:text="注册"
-        android:textSize="24dp"
-        android:gravity="center"/>
-
+        android:textSize="24dp" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Register"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="有账号？现在"
+            android:layout_toLeftOf="@id/tv11"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:id="@+id/tv11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#29488f"
+            android:textSize="20dp"
+            android:text="登录"/>
+    </RelativeLayout>
 
 
 

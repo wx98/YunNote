@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private EditText UserName,Password1,Password2;
     private RadioGroup RG;
-    private TextView tv;
+    private TextView tv,tv11;
     //声明全局变量
     private SharedPreferences sharedPreferences = null;
     String _UserName = null;
@@ -59,6 +59,15 @@ public class RegisterActivity extends AppCompatActivity {
         UserName = findViewById(R.id.txtUsername);
         Password1 = findViewById(R.id.txtPassword1);
         Password2 = findViewById(R.id.txtPassword2);
+        tv11 = findViewById(R.id.tv11);
+        tv11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         UserName.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

@@ -203,14 +203,14 @@ public class LoginActivity extends AppCompatActivity {
      *  @Override
      *  再按一次退出程序
      */
-    public void onBackPressed(){
-        if (lastBack == 0 || System.currentTimeMillis() - lastBack > 2000) {
-            Toast.makeText(LoginActivity.this, "不登录就退出嘛?", Toast.LENGTH_SHORT).show();
-            lastBack = System.currentTimeMillis();
-            return;
-        }
-        super.onBackPressed();
-    }
+//    public void onBackPressed(){
+//        if (lastBack == 0 || System.currentTimeMillis() - lastBack > 2000) {
+//            Toast.makeText(LoginActivity.this, "不登录就退出嘛?", Toast.LENGTH_SHORT).show();
+//            lastBack = System.currentTimeMillis();
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 
     /**
      *  状态栏沉浸
