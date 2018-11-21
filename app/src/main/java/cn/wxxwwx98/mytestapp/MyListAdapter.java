@@ -51,8 +51,7 @@ public  class MyListAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (list == null){
-            onRefresh();
-            //GetNote(MainActivity.uid);
+            GetNote(MainActivity.uid);
         }
         //GetNote();
         if (convertView == null) {
@@ -75,7 +74,6 @@ public  class MyListAdapter extends BaseAdapter{
 
     //SELECT * FROM `test`.`ndata` where UID = 60 ORDER BY `Ndata` DESC  LIMIT 0,10 ;
     //对获取笔记列表SQL进行分页
-    @Override
     public static void GetNote(final String Uid){
         new Thread(new Runnable() {
             @Override

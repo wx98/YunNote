@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     Bundle bundle;
 
     @BindView(R.id.list)
-    static MyListView myview;
+    MyListView myview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                             list = list1;
                             //关闭数据库对象
                             dbService.close(null, null, conn);
-                            myview.refreshComplete();
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         } catch (SQLException e) {

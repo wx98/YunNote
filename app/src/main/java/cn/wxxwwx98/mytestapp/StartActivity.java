@@ -1,4 +1,5 @@
 package cn.wxxwwx98.mytestapp;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +7,8 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 public class StartActivity extends AppCompatActivity {
 
     @Override
@@ -17,9 +20,9 @@ public class StartActivity extends AppCompatActivity {
         // 设置没有标题栏
         getSupportActionBar().hide();
 
-        LinearLayout layoutSplash=(LinearLayout) findViewById(R.id.activity_splash);
+        RelativeLayout layoutSplash=(RelativeLayout) findViewById(R.id.activity_splash);
         AlphaAnimation alphaAnimation=new AlphaAnimation(0.1f,1.0f);
-        alphaAnimation.setDuration(1500);//设置动画播放时长1000毫秒（1秒）
+        alphaAnimation.setDuration(1000);//设置动画播放时长1000毫秒（1秒）
         layoutSplash.startAnimation(alphaAnimation);
         //设置动画监听
 
@@ -31,7 +34,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 //页面的跳转
-                Intent intent=new Intent(StartActivity.this,LoginActivity.class);
+                Intent intent=new Intent(StartActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -39,7 +42,5 @@ public class StartActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {
             }
         });
-
-
     }
 }
