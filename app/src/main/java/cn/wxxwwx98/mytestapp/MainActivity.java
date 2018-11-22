@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         layoutInflater.inflate(R.layout.layout_tab1, TB.getTabContentView());
         layoutInflater.inflate(R.layout.layout_tab2, TB.getTabContentView());
-        TB.addTab(TB.newTabSpec("tab1").setIndicator("tab1").setContent(R.id.LinearLayout1));
-        TB.addTab(TB.newTabSpec("tab2").setIndicator("tab2").setContent(R.id.LinearLayout2));
+        TB.addTab(TB.newTabSpec("tab1").setIndicator("笔记",getResources().getDrawable(R.drawable.note)).setContent(R.id.LinearLayout1));
+        TB.addTab(TB.newTabSpec("tab2").setIndicator("资料",getResources().getDrawable(R.drawable.date)).setContent(R.id.LinearLayout2));
 
         Tab1TvUid = findViewById(R.id.UID);
         Tab1TvUName = findViewById(R.id.UserName);

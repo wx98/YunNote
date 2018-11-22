@@ -123,6 +123,9 @@
             android:id="@+id/btnExit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_layout"
+
+            android:textColor="#ffffff"
             android:text="退出登录" />
     </LinearLayout>
 

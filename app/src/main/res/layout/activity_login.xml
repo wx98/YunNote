@@ -40,6 +40,9 @@
         android:layout_height="50dp"
         android:layout_below="@id/Password"
         android:text="登录"
+        android:background="@drawable/btn_layout"
+
+        android:textColor="#ffffff"
         android:gravity="center"/>
     <RelativeLayout
         android:layout_width="wrap_content"

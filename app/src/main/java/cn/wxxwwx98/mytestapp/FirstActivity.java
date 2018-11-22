@@ -115,7 +115,7 @@ public class FirstActivity extends AppCompatActivity {
         ObjectAnimator scaleXLogo = ObjectAnimator.ofFloat(ivLogo, "scaleX", 1f, 0.75f);
         ObjectAnimator scaleYLogo = ObjectAnimator.ofFloat(ivLogo, "scaleY", 1f, 0.75f);
         AnimatorSet logoAnim = new AnimatorSet();
-        logoAnim.setDuration(3000);
+        logoAnim.setDuration(1100);
         logoAnim.play(tranLogo).with(scaleXLogo).with(scaleYLogo);
         logoAnim.start();
         logoAnim.addListener(new AnimatorListenerAdapter() {
