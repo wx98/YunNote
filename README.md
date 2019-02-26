@@ -9,4 +9,4 @@
   3. **笔记列表的查看**操作
   4. **笔记列表的删改**操作
 ### 本软件的编写环境：
->>>>>>>>![软件图标](/app/src/main/res/mipmap-hdpi/ic_launcher_round.png "")
+![软件图标](/MdImage/IconImage.png "")
