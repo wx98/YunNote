@@ -4,7 +4,7 @@
 
 
 ### 实现功能:   
-  1. **用户的注册登录退出模块**操作
+  1. **用户的注册登录退出模块**
   2. **用户信息的查找更改**操作
   3. **笔记列表的查看**操作
   4. **笔记列表的删改**操作
@@ -17,9 +17,9 @@
 ![请重新加载](/MdImage/ApkEnvironmentImage.png "软件图标")
 ### 项目结构
 >YunNote   
->>app   
+>>+app   
 >>>lib   
->>>>mysql-connector-java-5.1.30-bin.jar 
+>>>>[mysql-connector-java-5.1.30-bin.jar](app/libs/mysql-connector-java-5.1.30-bin.jar) (JDBC驱动)
 >>
 >>src   
 >>>main   
@@ -27,34 +27,34 @@
 >>>>>cn 
 >>>>>>wxxwwx98
 >>>>>>>mytestapp
->>>>>>>>AddNoteActivity.java   
->>>>>>>>DBService.java
->>>>>>>>FirstActivity.java
->>>>>>>>LoginActivity.java
->>>>>>>>MainActivity.java
->>>>>>>>MyListAdapter.java
->>>>>>>>MyListView.java
->>>>>>>>RegisterActivity.java
->>>>>>>>StartActivity.java   
+>>>>>>>>[AddNoteActivity.java](app/src/main/java/cn/wxxwwx98/mytestapp/AddNoteActivity.java)(添加笔记逻辑代码)   
+>>>>>>>>[DBService.java](app/src/main/java/cn/wxxwwx98/mytestapp/DBService.java)(数据库基本操作类)    
+>>>>>>>>[FirstActivity.java](app/src/main/java/cn/wxxwwx98/mytestapp/FirstActivity.java)(启动界面代码)    
+>>>>>>>>[LoginActivity.java](app/src/main/java/cn/wxxwwx98/mytestapp/LoginActivity.java)(登录代码代码)    
+>>>>>>>>[MainActivity.java](app/src/main/java/cn/wxxwwx98/mytestapp/MainActivity.java)(程序主界面代码)    
+>>>>>>>>[MyListAdapter.java](app/src/main/java/cn/wxxwwx98/mytestapp/MyListAdapter.java)(笔记更改逻辑代码)    
+>>>>>>>>[MyListView.java](app/src/main/java/cn/wxxwwx98/mytestapp/MyListView.java)(自定义控件完成下拉刷新功能)    
+>>>>>>>>[RegisterActivity.java](app/src/main/java/cn/wxxwwx98/mytestapp/RegisterActivity.java)(注册界面代码)    
+>>>>>>>>[StartActivity.java](app/src/main/java/cn/wxxwwx98/mytestapp/StartActivity.java)(启动界面动画代码)   
 >>>>
 >>>>res  
 >>>>>drawable
->>>>>>start.xml
+>>>>>>[start.xml](app/src/main/res/drawable/start.xml)(软件图标) 
 >>>>>
 >>>>>layout
->>>>>>activity_add_note.xml   
->>>>>>activity_first.xml   
->>>>>>activity_login.xml   
->>>>>>activity_main.xml   
->>>>>>activity_register.xml   
->>>>>>activity_start.xml    
->>>>>>layout_datetime.xml     
->>>>>>layout_header.xml    
->>>>>>layout_list.xml   
->>>>>>layout_tab1.xml   
->>>>>>layout_tab2.xml   
->>>>>>listview_item.xml   
+>>>>>>[activity_add_note.xml](app/src/main/res/layout/activity_add_note.xml)(添加笔记界面布局代码)
+>>>>>>[activity_first.xml](app/src/main/res/layout/activity_first.xml)(启动界面之后界面布局代码)    
+>>>>>>[activity_login.xml](app/src/main/res/layout/activity_login.xml)(登录界面布局代码)    
+>>>>>>[activity_main.xml](app/src/main/res/layout/activity_main.xml)(主界面布局代码)    
+>>>>>>[activity_register.xml](app/src/main/res/layout/activity_register.xml)(注册界面布局代码)    
+>>>>>>[activity_start.xml](app/src/main/res/layout/activity_start.xml)(启动动画界面布局代码)     
+>>>>>>[layout_datetime.xml](app/src/main/res/layout/layout_datetime.xml)(日期选择窗口布局代码)      
+>>>>>>[layout_header.xml](app/src/main/res/layout/layout_header.xml)(自定义刷新下拉控件布局代码)     
+>>>>>>[layout_list.xml](app/src/main/res/layout/layout_list.xml)(笔记列表布局代码)    
+>>>>>>[layout_tab1.xml](app/src/main/res/layout/layout_tab1.xml)(TabHost1布局代码)    
+>>>>>>[layout_tab2.xml](app/src/main/res/layout/layout_tab2.xml)(TabHost2布局代码)      
+>>>>>>[listview_item.xml](app/src/main/res/layout/listview_item.xml)(右下角的添加按键布局代码)    
 >>>      
->>>AndroidManifest.xml
+>>>[AndroidManifest.xml](app/src/main/AndroidManifest.xml)(应用程序的信息描述文件)
 
 ![请重新加载](/MdImage/IconImage.png "软件图标")
