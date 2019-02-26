@@ -17,7 +17,7 @@
 ![请重新加载](/MdImage/ApkEnvironmentImage.png "软件图标")
 ### 项目结构
 >YunNote   
->>+app   
+>>app   
 >>>lib   
 >>>>[mysql-connector-java-5.1.30-bin.jar](app/libs/mysql-connector-java-5.1.30-bin.jar) (JDBC驱动)
 >>
