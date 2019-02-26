@@ -57,21 +57,20 @@
 >>>      
 >>>[AndroidManifest.xml](app/src/main/AndroidManifest.xml)(应用程序的信息描述文件)
 ### 数据库文件及ER图
-#### 数据库创建文件→[test.sql](test.sql)   
-#### 数据库ER图   
+##### 数据库创建文件→[test.sql](test.sql)   
+##### 数据库ER图   
 ![请重新加载](/MdImage/DbERImage.png "数据库ER图")
-### 项目截图
-#### APP图标   
+## 项目截图
+### APP图标   
 ![请重新加载](/MdImage/IconImage.png "APP图标")   
-#### 启动界面
+### 启动界面
 ![请重新加载](/MdImage/LayoutStartImage1.png "启动界面")![请重新加载](/MdImage/LayoutStartImage2.png "启动界面")   
-#### 注册界面
-#### 注册界面
+### 注册界面
 ![请重新加载](/MdImage/LayoutRegisterImage.png "注册界面")   
-#### 登录界面
+### 登录界面
 ![请重新加载](/MdImage/LayoutLoginImage.png "登录界面")   
-#### 笔记列表界面
+### 笔记列表界面
 ![请重新加载](/MdImage/LayoutTabHost1Image.png "笔记列表界面")   
-#### 用户资料界面
+### 用户资料界面
 ![请重新加载](/MdImage/LayoutTabHost2Image.png "用户资料界面")   
 
