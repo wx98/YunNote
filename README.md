@@ -42,7 +42,7 @@
 >>>>>>[start.xml](app/src/main/res/drawable/start.xml)(软件图标) 
 >>>>>
 >>>>>layout
->>>>>>[activity_add_note.xml](app/src/main/res/layout/activity_add_note.xml)(添加笔记界面布局代码)
+>>>>>>[activity_add_note.xml](app/src/main/res/layout/activity_add_note.xml)(添加笔记界面布局代码)   
 >>>>>>[activity_first.xml](app/src/main/res/layout/activity_first.xml)(启动界面之后界面布局代码)    
 >>>>>>[activity_login.xml](app/src/main/res/layout/activity_login.xml)(登录界面布局代码)    
 >>>>>>[activity_main.xml](app/src/main/res/layout/activity_main.xml)(主界面布局代码)    
@@ -56,5 +56,22 @@
 >>>>>>[listview_item.xml](app/src/main/res/layout/listview_item.xml)(右下角的添加按键布局代码)    
 >>>      
 >>>[AndroidManifest.xml](app/src/main/AndroidManifest.xml)(应用程序的信息描述文件)
+### 数据库文件及ER图
+#### 数据库创建文件→[test.sql](test.sql)   
+#### 数据库ER图   
+![请重新加载](/MdImage/DbERImage.png "数据库ER图")
+### 项目截图
+#### APP图标   
+![请重新加载](/MdImage/IconImage.png "APP图标")   
+#### 启动界面
+![请重新加载](/MdImage/LayoutStartImage1.png "启动界面")![请重新加载](/MdImage/LayoutStartImage2.png "启动界面")   
+#### 注册界面
+#### 注册界面
+![请重新加载](/MdImage/LayoutRegisterImage.png "注册界面")   
+#### 登录界面
+![请重新加载](/MdImage/LayoutLoginImage.png "登录界面")   
+#### 笔记列表界面
+![请重新加载](/MdImage/LayoutTabHost1Image.png "笔记列表界面")   
+#### 用户资料界面
+![请重新加载](/MdImage/LayoutTabHost2Image.png "用户资料界面")   
 
-![请重新加载](/MdImage/IconImage.png "软件图标")
