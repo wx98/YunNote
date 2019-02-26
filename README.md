@@ -57,7 +57,7 @@
 >>>      
 >>>[AndroidManifest.xml](app/src/main/AndroidManifest.xml)(应用程序的信息描述文件)
 ### 数据库文件及ER图
-##### 数据库创建文件→[test.sql](test.sql)   
+##### 数据库创建文件--→[test.sql](test.sql)   
 ##### 数据库ER图   
 ![请重新加载](/MdImage/DbERImage.png "数据库ER图")
 ## 项目截图
